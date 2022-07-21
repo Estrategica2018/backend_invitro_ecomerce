@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginAuthRequest;
+use App\Http\Requests\Auth\RegisterAuthRequest;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 
 class AuthController extends Controller
@@ -25,14 +25,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(LoginAuthRequest $request)
     {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'No autorizado'], 401);
+        if (! $token = auth()->attempt($request->all())) {
+            return response()->json([
+                'overall_status' => 'successfull',
+                'message' => 'Cerrar sesión con éxito'
+            ], 401);
         }
-
         return $this->respondWithToken($token);
     }
 
@@ -43,7 +43,12 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json([
+        'overall_status' => 'successfull',
+         'data' => [
+             'usuario' => auth()->user()
+         ]
+        ]);
     }
 
     /**
@@ -55,7 +60,10 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Cerrar sesión con éxito']);
+        return response()->json([
+            'overall_status' => 'successfull',
+            'message' => 'Cerrar sesión con éxito'
+        ]);
     }
 
     /**
@@ -78,43 +86,36 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'overall_status' => 'successfull',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
 
-    public function register(Request $request)
+    public function register(RegisterAuthRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6',
-            'role' => 'required'
-        ]);
-
-        if($validator->fails())
-        {
-            return response()->json($validator->errors()->toJson(),400);
-        }
-
-        if (!Role::find($request->role))
+        if (!Role::find($request['role']))
         {
             return response()->json([
+                'overall_status' => 'unsuccessfull',
                 'message' => '¡Role no existe!',
             ],400);
         }
 
         $user = User::create(array_merge(
-            $validator->validate(),
+            $request->all(),
             ['password' => bcrypt($request->password)]
         ));
         $user->roles()->attach($request->role);
 
         return response()->json([
-           'message' => '¡Usuario registrado exitosamente!',
-           'user' => $user,
-           'user_role' => $user->roles()->get()
+            'overall_status' => 'successfull',
+            'message' => '¡Usuario registrado exitosamente!',
+            'data' => [
+                'user' => $user,
+                'user_role' => $user->roles()->get()
+            ]
         ],201);
     }
 }

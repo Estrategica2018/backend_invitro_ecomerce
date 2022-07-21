@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'No autorizado'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -54,7 +55,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Cerrar sesión con éxito']);
     }
 
     /**
@@ -88,7 +89,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),[
             'name' => 'required',
             'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
+            'role' => 'required'
         ]);
 
         if($validator->fails())
@@ -96,14 +98,23 @@ class AuthController extends Controller
             return response()->json($validator->errors()->toJson(),400);
         }
 
+        if (!Role::find($request->role))
+        {
+            return response()->json([
+                'message' => '¡Role no existe!',
+            ],400);
+        }
+
         $user = User::create(array_merge(
             $validator->validate(),
             ['password' => bcrypt($request->password)]
         ));
+        $user->roles()->attach($request->role);
 
         return response()->json([
            'message' => '¡Usuario registrado exitosamente!',
-           'user' => $user
+           'user' => $user,
+           'user_role' => $user->roles()->get()
         ],201);
     }
 }

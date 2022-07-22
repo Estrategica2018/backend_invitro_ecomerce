@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginAuthRequest;
 use App\Http\Requests\Auth\RegisterAuthRequest;
+use App\Models\ConfirmAccount;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\SuccessfullRegistration;
+use App\Notifications\SuccessfulRegistration;
+use Illuminate\Support\Facades\Notification;
 
 
 class AuthController extends Controller
@@ -108,6 +112,20 @@ class AuthController extends Controller
             ['password' => bcrypt($request->password)]
         ));
         $user->roles()->attach($request->role);
+
+        ConfirmAccount::where('email',$request['email'])->delete();
+
+        try{
+            Notification::route('mail', $request['email'])
+                ->notify(new SuccessfullRegistration());
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'overall_status' => 'unsuccessfull',
+                'message' => 'Usuario creado, error enviando el correo electrónico .'.' '.$e
+            ], 403);
+        }
 
         return response()->json([
             'overall_status' => 'successfull',

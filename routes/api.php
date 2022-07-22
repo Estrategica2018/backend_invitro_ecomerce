@@ -26,10 +26,8 @@ Route::group(['middleware' => ['api'], 'prefix' => 'auth'], function ($router) {
     Route::post('register', 'App\Http\Controllers\AuthController@register');
 });
 
-Route::group(['middleware' => ['api','auth:api','role:Administrador']], function ($router) {
-    Route::get('test_admin', function (Request $request){
-        return response()->json([
-            'message' => '¡Usuario tiene permiso!',
-        ],201);
-    });
+
+Route::group(['middleware' => ['api',]], function ($router) {
+    Route::post('confirm_email', 'App\Http\Controllers\NotifyUserController@confirm_email');
+    Route::post('validate_confirm_email', 'App\Http\Controllers\NotifyUserController@validate_confirm_email');
 });

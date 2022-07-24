@@ -25,8 +25,7 @@ class LoginAuthRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required',
-            'email' => 'required|string|email|max:100|unique:users',
+            'email' => 'required|string|email',
         ];
     }
 }

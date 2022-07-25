@@ -168,7 +168,7 @@
                 </tr>
                 <tr>
                     <td bgcolor="#ffffff" align="left" style="padding:20px 20px 20px 20px;border-radius:4px 4px 4px 4px;color:#666666;font-family:'Lato',Helvetica,Arial,sans-serif;font-size:18px;font-weight:400;line-height:25px;text-align:center;vertical-align:middle">
-                        <a href="#" target="_blank">
+                        <a href="{{$url}}" target="_blank">
                             <button type="button" class="btn btn-primary">Confirmar registro</button>
                         </a>
                     </td>

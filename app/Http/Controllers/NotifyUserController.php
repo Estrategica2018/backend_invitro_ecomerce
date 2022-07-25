@@ -30,15 +30,15 @@ class NotifyUserController extends Controller
     public function confirm_email(ConfirmEmailNotifyUserRequest $request)
     {
         $array_code = $this->register_and_get_code($request);
-
+        $url = $request['origin'].'/'.$request['email'];
         try{
             Notification::route('mail', $request['email'])
-                ->notify(new AccountRegistration($request['email'], $array_code));
+                ->notify(new AccountRegistration($array_code,$url));
         }catch (\Exception $e){
             return response()->json([
                 'overall_status' => 'unsuccessfull',
                 'message' => 'Error enviando el correo electrónico .'.' '.$e
-            ], 403);
+            ], 400);
         }
         return response()->json([
             'overall_status' => 'successfull',

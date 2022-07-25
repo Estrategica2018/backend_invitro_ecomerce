@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\NotifyUserRequest;
+namespace App\Http\Requests\ForgotPassword;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ConfirmEmailNotifyUserRequest extends FormRequest
+class CreateForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class ConfirmEmailNotifyUserRequest extends FormRequest
     {
         return [
             //
-            'origin' => 'required'
+            'email' => 'required|string|email',
+            'origin' => 'required',
         ];
     }
 }

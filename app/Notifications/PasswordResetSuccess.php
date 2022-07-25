@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AccountRegistration extends Notification
+class PasswordResetSuccess extends Notification
 {
     use Queueable;
 
@@ -16,14 +16,9 @@ class AccountRegistration extends Notification
      *
      * @return void
      */
-    private $code;
-    private $url;
-    public function __construct($code,$url)
+    public function __construct()
     {
         //
-        $this->code = $code;
-        $this->url = $url;
-
     }
 
     /**
@@ -47,12 +42,8 @@ class AccountRegistration extends Notification
     {
         return (new MailMessage)
             ->from('admin@e-logic.com.co', 'In Vitro e-comerce')
-            ->subject('Notificación Registro')
-            ->view('notifications.account_registration',[
-                'array_code' => $this->code,
-                'url'     => $this->url
-                ]);
-
+            ->subject('Notificación recuperación contraseña exitoso')
+            ->view('notifications.passwordResetSuccess');
 
     }
 

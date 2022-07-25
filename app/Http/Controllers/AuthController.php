@@ -8,7 +8,6 @@ use App\Models\ConfirmAccount;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\SuccessfullRegistration;
-use App\Notifications\SuccessfulRegistration;
 use Illuminate\Support\Facades\Notification;
 
 
@@ -33,8 +32,8 @@ class AuthController extends Controller
     {
         if (! $token = auth()->attempt($request->all())) {
             return response()->json([
-                'overall_status' => 'successfull',
-                'message' => 'Cerrar sesión con éxito'
+                'overall_status' => 'unsuccessfull',
+                'message' => 'Credenciales no validas'
             ], 401);
         }
         return $this->respondWithToken($token);
@@ -99,6 +98,20 @@ class AuthController extends Controller
 
     public function register(RegisterAuthRequest $request)
     {
+        $confirmAccount = ConfirmAccount::where([
+            ['email','=',$request['email']],
+            ['code','=',$request['code']],
+        ])->first();
+
+        if(!$confirmAccount)
+        {
+            return response()->json([
+                'overall_status' => 'unsuccessfull',
+                'message' => '¡Código de confirmación de cuenta no existe!',
+
+            ],400);
+        }
+
         if (!Role::find($request['role']))
         {
             return response()->json([
@@ -113,7 +126,7 @@ class AuthController extends Controller
         ));
         $user->roles()->attach($request->role);
 
-        ConfirmAccount::where('email',$request['email'])->delete();
+        $confirmAccount->delete();
 
         try{
             Notification::route('mail', $request['email'])

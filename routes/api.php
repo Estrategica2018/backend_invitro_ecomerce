@@ -30,6 +30,7 @@ Route::group(['middleware' => ['api'], 'prefix' => 'auth'], function ($router) {
 
 //validación y confirmación de cuenta
 Route::group(['middleware' => ['api']], function ($router) {
+	Route::get('/user/find/{email}', 'App\Http\Controllers\UserController@find');
     Route::post('confirm_email', 'App\Http\Controllers\NotifyUserController@confirm_email');
     Route::post('validate_confirm_email', 'App\Http\Controllers\NotifyUserController@validate_confirm_email');
 });

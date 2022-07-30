@@ -25,6 +25,7 @@ class ConfirmEmailNotifyUserRequest extends FormRequest
     {
         return [
             //
+            'email' =>  'required|string|email',
             'origin' => 'required'
         ];
     }

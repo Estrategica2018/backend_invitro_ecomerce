@@ -88,7 +88,13 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+		$user = auth()->guard('api')->user();
+		
         return response()->json([
+		    'data' => [
+                'user' => $user,
+                'user_role' => $user->roles()->get()
+            ],
             'overall_status' => 'successfull',
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -109,14 +115,14 @@ class AuthController extends Controller
                 'overall_status' => 'unsuccessfull',
                 'message' => '¡Código de confirmación de cuenta no existe!',
 
-            ],400);
+            ],401);
         }
 
         if (!Role::find($request['role']))
         {
             return response()->json([
                 'overall_status' => 'unsuccessfull',
-                'message' => '¡Role no existe!',
+                'message' => '¡Rol no existe!',
             ],400);
         }
 

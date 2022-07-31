@@ -38,7 +38,7 @@ class NotifyUserController extends Controller
             return response()->json([
                 'overall_status' => 'unsuccessfull',
                 'message' => 'Error enviando el correo electrónico .'.' '.$e
-            ], 400);
+            ], 500);
         }
         return response()->json([
             'overall_status' => 'successfull',
@@ -61,7 +61,7 @@ class NotifyUserController extends Controller
                     ], 200);
                 }
                 return response()->json([
-                    'overall_status' => 'unsuccessfull',
+                    'overall_status' => 'successfull',
                     'message' => 'Código validado exitósamente'
                 ],200);
 

@@ -37,7 +37,7 @@ Route::group(['middleware' => ['api']], function ($router) {
 //recuperación de contraseña
 Route::group(['middleware' => ['api'],'prefix' => 'forgotpassword'], function ($router) {
     Route::post('create', 'App\Http\Controllers\ForgotPasswordController@create');
-    Route::get('find', 'App\Http\Controllers\ForgotPasswordController@find');
+    Route::post('find', 'App\Http\Controllers\ForgotPasswordController@find');
     Route::post('reset', 'App\Http\Controllers\ForgotPasswordController@reset');
 });
 Route::fallback(function(){

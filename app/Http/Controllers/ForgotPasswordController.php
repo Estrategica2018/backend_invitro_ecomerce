@@ -38,7 +38,7 @@ class ForgotPasswordController extends Controller
                 'token' => Str::random(60)
             ]
         );
-        $url = $request['origin'].'/'.$passwordReset->token;
+        $url = $request['origin'].'/recoverPassword/'.$passwordReset->token;
         if ($user && $passwordReset) {
             $user->notify(  new PasswordResetRequest($url) );
             return response()->json([
@@ -74,8 +74,11 @@ class ForgotPasswordController extends Controller
             PasswordReset::where('token', $request['token'])->delete();
             return response()->json([
                 'overall_status' => 'unsuccessfull',
+				'data' => [
+                   'email' => $passwordReset->email
+                 ],
                 'message' => 'Este token de restablecimiento de contraseña ha caducado, por favor solicita de nuevo la recuperación de clave.'
-            ], 404);
+            ], 200);
         }
         return response()->json([
             'overall_status' => 'successfull',

@@ -40,6 +40,10 @@ Route::group(['middleware' => ['api'],'prefix' => 'forgotpassword'], function ($
     Route::post('find', 'App\Http\Controllers\ForgotPasswordController@find');
     Route::post('reset', 'App\Http\Controllers\ForgotPasswordController@reset');
 });
+//gestión de usuario
+Route::group(['middleware' => ['api','auth:api'],'prefix' => 'user'], function ($router) {
+    Route::post('update', 'App\Http\Controllers\UserController@update');
+});
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada. Si el error persiste, póngase en contacto con ......'], 404);

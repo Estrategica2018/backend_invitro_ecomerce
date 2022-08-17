@@ -44,6 +44,13 @@ Route::group(['middleware' => ['api'],'prefix' => 'forgotpassword'], function ($
 Route::group(['middleware' => ['api','auth:api'],'prefix' => 'user'], function ($router) {
     Route::post('update', 'App\Http\Controllers\UserController@update');
 });
+//gestión de categorias
+Route::resource('categories',\App\Http\Controllers\CategoryController::class)
+    ->middleware('auth');
+Route::group(['middleware' => ['auth'],'prefix'=>'categories'],function (){
+    Route::get('list','App\Http\Controllers\CategoryController@list')->name('categories.list');
+});
+
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada. Si el error persiste, póngase en contacto con ......'], 404);

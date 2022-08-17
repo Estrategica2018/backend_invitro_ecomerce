@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class ProductController extends Controller
 {
     //
 
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreProductRequest $request)
     {
         $product = Product::create($request->all());
 

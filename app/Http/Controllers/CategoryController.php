@@ -11,8 +11,8 @@ class CategoryController extends Controller
 {
     //
 
-    public function store(StoreCategoryRequest $request) {
-
+    public function store(StoreCategoryRequest $request)
+    {
         $category = Category::create($request->all());
 
         return response()->json([
@@ -25,8 +25,8 @@ class CategoryController extends Controller
 
     }
 
-    public function update(UpdateCategoryRequest $request , Category $category){
-
+    public function update(UpdateCategoryRequest $request , Category $category)
+    {
         $category->update($request->all());
 
         return response()->json([
@@ -39,8 +39,8 @@ class CategoryController extends Controller
 
     }
 
-    public function list(){
-
+    public function list()
+    {
         $categories = Category::all();
 
         return response()->json([

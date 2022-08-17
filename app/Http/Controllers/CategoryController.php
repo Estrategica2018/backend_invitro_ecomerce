@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -24,13 +25,13 @@ class CategoryController extends Controller
 
     }
 
-    public function update(StoreCategoryRequest $request , Category $category){
+    public function update(UpdateCategoryRequest $request , Category $category){
 
         $category->update($request->all());
 
         return response()->json([
             'overall_status' => 'successfull',
-            'message' => '¡Categoria registrada exitosamente!',
+            'message' => '¡Categoria actualizada exitosamente!',
             'data' => [
                 'category' => $category,
             ]
@@ -44,7 +45,7 @@ class CategoryController extends Controller
 
         return response()->json([
             'overall_status' => 'successfull',
-            'message' => '¡Categoria registrada exitosamente!',
+            'message' => '¡Categorias consultadas exitosamente!',
             'data' => [
                 'categories' => $categories,
             ]

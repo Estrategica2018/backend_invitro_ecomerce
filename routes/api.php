@@ -50,7 +50,12 @@ Route::resource('categories',\App\Http\Controllers\CategoryController::class)
 Route::group(['middleware' => ['auth'],'prefix'=>'categories'],function (){
     Route::get('list','App\Http\Controllers\CategoryController@list')->name('categories.list');
 });
-
+//gestión de productos
+Route::resource('products',\App\Http\Controllers\ProductController::class)
+    ->middleware('auth');
+Route::group(['middleware' => ['auth'],'prefix'=>'products'],function (){
+    Route::get('list','App\Http\Controllers\ProductController@list')->name('products.list');
+});
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada. Si el error persiste, póngase en contacto con ......'], 404);

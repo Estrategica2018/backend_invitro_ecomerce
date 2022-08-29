@@ -28,6 +28,8 @@ class UpdateServiceRequest extends FormRequest
             'name' => '',
             'detail' => '',
             'price' => '',
+            'image_url' => '',
+            'slide_images_url' => '',
             'service_relationship' => '',
             'product_relationship' => '',
         ];

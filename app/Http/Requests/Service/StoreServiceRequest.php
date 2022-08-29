@@ -28,6 +28,8 @@ class StoreServiceRequest extends FormRequest
             'name' => 'required',
             'detail' => 'required',
             'price' => 'required',
+            'image_url' => 'required',
+            'slide_images_url' => '',
             'service_relationship' => 'required',
             'product_relationship' => 'required',
         ];

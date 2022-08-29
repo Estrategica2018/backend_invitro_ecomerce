@@ -47,20 +47,22 @@ Route::group(['middleware' => ['api','auth:api'],'prefix' => 'user'], function (
 //gestión de categorias
 Route::resource('categories',\App\Http\Controllers\CategoryController::class,['only'=>['store','update']])
     ->middleware('auth');
-Route::group(['middleware' => ['auth'],'prefix'=>'categories'],function (){
+Route::group(['middleware' => ['api'],'prefix'=>'categories'],function (){
     Route::get('list','App\Http\Controllers\CategoryController@list')->name('categories.list');
 });
 //gestión de productos
 Route::resource('products',\App\Http\Controllers\ProductController::class,['only'=>['store','update']])
-    ->middleware('auth');
-Route::group(['middleware' => ['auth'],'prefix'=>'products'],function (){
+    ->middleware('auth:api');
+Route::group(['middleware' => ['api'],'prefix'=>'products'],function (){
     Route::get('list','App\Http\Controllers\ProductController@list')->name('products.list');
+    Route::get('get/{product}',[App\Http\Controllers\ProductController::class,'get']);
 });
 //gestión de servicios
 Route::resource('services',\App\Http\Controllers\ServiceController::class,['only'=>['store','update']])
     ->middleware('auth');
-Route::group(['middleware' => ['auth'],'prefix'=>'services'],function (){
+Route::group(['middleware' => ['api'],'prefix'=>'services'],function (){
     Route::get('list','App\Http\Controllers\ServiceController@list')->name('services.list');
+    Route::get('get/{service}',[App\Http\Controllers\ServiceController::class,'get']);
 });
 Route::fallback(function(){
     return response()->json([

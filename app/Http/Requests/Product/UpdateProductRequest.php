@@ -27,10 +27,13 @@ class UpdateProductRequest extends FormRequest
             //
             'name' => '',
             'price' => '',
+            'image_url' => '',
+            'slide_images_url' => '',
             'category_id' => '',
             'service_relationship' => '',
             'product_relationship' => '',
             'attributes' => '',
+            'detail' => ''
         ];
     }
 }

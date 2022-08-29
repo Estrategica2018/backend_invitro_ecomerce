@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -48,5 +48,29 @@ class ProductController extends Controller
                 'product' => $products,
             ]
         ],201);
+    }
+
+    public function get(Product $product)
+    {
+
+        return response()->json([
+            'overall_status' => 'successfull',
+            'message' => '¡Productos consultado exitosamente!',
+            'data' => [
+                'product' => $product,
+                'service_relationship' => $this->get_services($product),
+                'product_relationship' => $this->get_products($product),
+            ]
+        ],201);
+    }
+
+    public function get_services ($product)
+    {
+        return Service::whereIn('id',explode('|',$product->service_relationship))->get();
+    }
+
+    public function get_products ($product)
+    {
+        return Product::whereIn('id',explode('|',$product->product_relationship))->get();
     }
 }

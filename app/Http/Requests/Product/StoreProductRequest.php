@@ -27,10 +27,14 @@ class StoreProductRequest extends FormRequest
             //
             'name' => 'required',
             'price' => 'required',
+            'image_url' => 'required',
+            'slide_images_url' => '',
             'category_id' => 'required',
             'service_relationship' => 'required',
             'product_relationship' => 'required',
             'attributes' => 'required',
+            'detail' => 'required',
+
         ];
     }
 }

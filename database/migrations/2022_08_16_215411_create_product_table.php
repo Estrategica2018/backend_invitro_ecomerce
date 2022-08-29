@@ -17,11 +17,14 @@ class CreateProductTable extends Migration
             $table->id();
             $table->string('name');
             $table->double('price');
+            $table->longText('image_url');
+            $table->longText('slide_images_url')->nullable();
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->longText('service_relationship')->comment('ids relacion con la tabla servicios');
-            $table->longText('product_relationship')->comment('ids relacion con la tabla productos');
-            $table->string('attributes');
+            $table->longText('service_relationship')->nullable()->comment('ids relacion con la tabla servicios');
+            $table->longText('product_relationship')->nullable()->comment('ids relacion con la tabla productos');
+            $table->longText('attributes');
+            $table->longText('detail');
             $table->timestamps();
         });
     }

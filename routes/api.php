@@ -64,6 +64,13 @@ Route::group(['middleware' => ['api'],'prefix'=>'services'],function (){
     Route::get('list','App\Http\Controllers\ServiceController@list')->name('services.list');
     Route::get('get/{service}',[App\Http\Controllers\ServiceController::class,'get']);
 });
+//gestión de resultado del cruce de productos
+Route::resource('product_result_crosses',\App\Http\Controllers\ProductResultCrossController::class,['only'=>['store','update']])
+    ->middleware('auth');
+Route::group(['middleware' => ['api'],'prefix'=>'product_result_crosses'],function (){
+    Route::get('list','App\Http\Controllers\ProductResultCrossController@list')->name('product_result_cross.list');
+});
+
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada. Si el error persiste, póngase en contacto con ......'], 404);

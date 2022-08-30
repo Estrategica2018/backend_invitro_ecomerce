@@ -70,7 +70,12 @@ Route::resource('product_result_crosses',\App\Http\Controllers\ProductResultCros
 Route::group(['middleware' => ['api'],'prefix'=>'product_result_crosses'],function (){
     Route::get('list','App\Http\Controllers\ProductResultCrossController@list')->name('product_result_cross.list');
 });
-
+//gestión reseña de productos
+Route::resource('product_reviews',\App\Http\Controllers\ProductReviewController::class,['only'=>['store','update']])
+    ->middleware('auth');
+Route::group(['middleware' => ['api'],'prefix'=>'product_reviews'],function (){
+    Route::get('list','App\Http\Controllers\ProductReviewController@list')->name('product_review.list');
+});
 Route::fallback(function(){
     return response()->json([
         'message' => 'Página no encontrada. Si el error persiste, póngase en contacto con ......'], 404);

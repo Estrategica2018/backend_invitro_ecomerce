@@ -50,18 +50,26 @@ class ProductController extends Controller
         ],201);
     }
 
-    public function get(Product $product)
+    public function get($productId)
     {
-
-        return response()->json([
-            'overall_status' => 'successfull',
-            'message' => '¡Productos consultado exitosamente!',
-            'data' => [
-                'product' => $product,
-                'service_relationship' => $this->get_services($product),
-                'product_relationship' => $this->get_products($product),
-            ]
-        ],201);
+        $product = Product::find($productId);
+        if($product) {
+            return response()->json([
+                'overall_status' => 'successfull',
+                'message' => '¡Productos consultado exitosamente!',
+                'data' => [
+                    'product' => $product,
+                    'service_relationship' => $this->get_services($product),
+                    'product_relationship' => $this->get_products($product),
+                ]
+            ],201);
+        }
+        else {
+            return response()->json([
+                'overall_status' => 'error',
+                'message' => 'Producto no existe!'                
+            ],404);
+        }
     }
 
     public function get_services ($product)

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('app', 'App\Http\Controllers\AppController@configuration');
+Route::get('app/seeder', 'App\Http\Controllers\AppController@seeder');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -55,7 +56,7 @@ Route::resource('products',\App\Http\Controllers\ProductController::class,['only
     ->middleware('auth:api');
 Route::group(['middleware' => ['api'],'prefix'=>'products'],function (){
     Route::get('list','App\Http\Controllers\ProductController@list')->name('products.list');
-    Route::get('get/{product}',[App\Http\Controllers\ProductController::class,'get']);
+    Route::get('get/{productId}',[App\Http\Controllers\ProductController::class,'get']);
 });
 //gestión de servicios
 Route::resource('services',\App\Http\Controllers\ServiceController::class,['only'=>['store','update']])
